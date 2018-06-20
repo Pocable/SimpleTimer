@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Media;
 using System.Text;
@@ -18,12 +19,19 @@ namespace Timer
         public SoundPlayer player = new SoundPlayer();
         public bool mouseDownBox = false;
         public bool mouseDownForm = false;
+        public bool alarmSoundEnabled = true;
         public Form1()
         {
             InitializeComponent();
             timer1.Enabled = false;
-            player.SoundLocation = "alarm.wav";
-            player.Load();
+            try
+            {
+                player.SoundLocation = "alarm.wav";
+                player.Load();
+            }catch(FileNotFoundException e)
+            {
+                alarmSoundEnabled = false;
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -37,7 +45,10 @@ namespace Timer
             else
             {
                 maskedTextBox.ForeColor = Color.Red;
-                player.PlayLooping();
+                if (alarmSoundEnabled)
+                {
+                    player.PlayLooping();
+                }
             }
         }
 
@@ -78,7 +89,10 @@ namespace Timer
         private void Stop()
         {
             timer1.Stop();
-            player.Stop();
+            if (alarmSoundEnabled)
+            {
+                player.Stop();
+            }
             maskedTextBox.ForeColor = Color.Black;
         }
 
