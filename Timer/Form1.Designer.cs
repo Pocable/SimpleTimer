@@ -50,6 +50,7 @@
             this.maskedTextBox.Mask = "00:00:00";
             this.maskedTextBox.Name = "maskedTextBox";
             this.maskedTextBox.PromptChar = '0';
+            this.maskedTextBox.ResetOnSpace = false;
             this.maskedTextBox.ShortcutsEnabled = false;
             this.maskedTextBox.Size = new System.Drawing.Size(552, 152);
             this.maskedTextBox.TabIndex = 5;
