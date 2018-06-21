@@ -16,10 +16,13 @@ namespace Timer
     {
 
         public int seconds = 0;
+
         public SoundPlayer player = new SoundPlayer();
+
         public bool mouseDownBox = false;
         public bool mouseDownForm = false;
         public bool alarmSoundEnabled = true;
+
         public Form1()
         {
             InitializeComponent();
@@ -28,10 +31,11 @@ namespace Timer
             {
                 player.SoundLocation = "alarm.wav";
                 player.Load();
-            }catch(FileNotFoundException e)
+            }catch(FileNotFoundException)
             {
                 alarmSoundEnabled = false;
             }
+            maskedTextBox.ForeColor = Color.Gold;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -93,7 +97,7 @@ namespace Timer
             {
                 player.Stop();
             }
-            maskedTextBox.ForeColor = Color.Black;
+            maskedTextBox.ForeColor = Color.Gold;
         }
 
         private void Start()
@@ -103,6 +107,7 @@ namespace Timer
                 seconds = ParseDisplay();
                 timer1.Start();
             }
+            maskedTextBox.ForeColor = Color.Black;
         }
 
         private void timeDisplay_KeyPress(object sender, KeyPressEventArgs e)
@@ -112,14 +117,16 @@ namespace Timer
 
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == Convert.ToChar(Keys.Enter))
+           if (e.KeyChar == Convert.ToChar(Keys.Space))
             {
-                Start();
-                focusArea.Focus();
-            }
-            else if (e.KeyChar == Convert.ToChar(Keys.Space))
-            {
-                Stop();
+                if (timer1.Enabled)
+                {
+                    Stop();
+                }
+                else
+                {
+                    Start();
+                }
                 focusArea.Focus();
             }
         }

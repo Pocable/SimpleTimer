@@ -6,5 +6,4 @@ Quick and easy simple forms timer. Done while learning about C# forms.
 ## Controls
 * Double-Click: Exit application (on the border only)
 * Click and Drag: Move the timer (on the border only)
-* Space: Pause/Stop the timer
-* Enter: Start the timer
+* Space: Start/Stop the timer
