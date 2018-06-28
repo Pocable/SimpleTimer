@@ -22,6 +22,9 @@ namespace Timer
         public bool mouseDownBox = false;
         public bool mouseDownForm = false;
         public bool alarmSoundEnabled = true;
+        public Color pauseColor = Color.FromArgb(128,128,128);
+        public Color timerEndColor = Color.Red;
+        public Color runningColor = Color.Black;
 
         public Form1()
         {
@@ -35,7 +38,7 @@ namespace Timer
             {
                 alarmSoundEnabled = false;
             }
-            maskedTextBox.ForeColor = Color.Gold;
+            maskedTextBox.ForeColor = pauseColor;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -48,7 +51,7 @@ namespace Timer
             }
             else
             {
-                maskedTextBox.ForeColor = Color.Red;
+                maskedTextBox.ForeColor = timerEndColor;
                 if (alarmSoundEnabled)
                 {
                     player.PlayLooping();
@@ -97,7 +100,7 @@ namespace Timer
             {
                 player.Stop();
             }
-            maskedTextBox.ForeColor = Color.Gold;
+            maskedTextBox.ForeColor = pauseColor;
         }
 
         private void Start()
@@ -107,7 +110,7 @@ namespace Timer
                 seconds = ParseDisplay();
                 timer1.Start();
             }
-            maskedTextBox.ForeColor = Color.Black;
+            maskedTextBox.ForeColor = runningColor;
         }
 
         private void timeDisplay_KeyPress(object sender, KeyPressEventArgs e)
