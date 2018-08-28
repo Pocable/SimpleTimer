@@ -174,7 +174,9 @@ namespace Timer
         {
             if (mouseDownForm)
             {
-                this.Location = Cursor.Position;
+                int x = Cursor.Position.X - ((e.X > this.Width / 2) ? this.Width - 1 : 0);
+                int y = Cursor.Position.Y - ((e.Y > this.Height / 2) ? this.Height - 1 : 0);
+                this.Location = new Point(x, y);
             }
         }
 
