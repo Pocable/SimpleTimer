@@ -22,6 +22,7 @@ namespace Timer
         public bool mouseDownBox = false;
         public bool mouseDownForm = false;
         public bool alarmSoundEnabled = true;
+        public bool isAlarmPlaying = false;
         public Color pauseColor = Color.FromArgb(128,128,128);
         public Color timerEndColor = Color.Red;
         public Color runningColor = Color.Black;
@@ -52,9 +53,10 @@ namespace Timer
             else
             {
                 maskedTextBox.ForeColor = timerEndColor;
-                if (alarmSoundEnabled)
+                if (alarmSoundEnabled && !isAlarmPlaying)
                 {
                     player.PlayLooping();
+                    isAlarmPlaying = true;
                 }
             }
         }
@@ -99,6 +101,7 @@ namespace Timer
             if (alarmSoundEnabled)
             {
                 player.Stop();
+                isAlarmPlaying = false;
             }
             maskedTextBox.ForeColor = pauseColor;
         }
