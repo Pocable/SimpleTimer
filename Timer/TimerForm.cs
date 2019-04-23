@@ -12,22 +12,27 @@ using System.Windows.Forms;
 
 namespace Timer
 {
-    public partial class Form1 : Form
+    public partial class TimerForm : Form
     {
 
         public int seconds = 0;
 
         public SoundPlayer player = new SoundPlayer();
 
+        #region State
         public bool mouseDownBox = false;
         public bool mouseDownForm = false;
         public bool alarmSoundEnabled = true;
         public bool isAlarmPlaying = false;
+        #endregion
+
+        #region Colors
         public Color pauseColor = Color.FromArgb(128,128,128);
         public Color timerEndColor = Color.Red;
         public Color runningColor = Color.Black;
+        #endregion
 
-        public Form1()
+        public TimerForm()
         {
             InitializeComponent();
             timer1.Enabled = false;
@@ -42,6 +47,10 @@ namespace Timer
             maskedTextBox.ForeColor = pauseColor;
         }
 
+        /// <summary>
+        /// Called when the timer ticks. Set for every second.
+        /// Counts the timer down. If there are no seconds left on the timer change color and play sound.
+        /// </summary>
         private void timer1_Tick(object sender, EventArgs e)
         {
             maskedTextBox.Text = BuildDisplay();
@@ -52,6 +61,8 @@ namespace Timer
             }
             else
             {
+
+                // Change the text color and play the sound if its not playing.
                 maskedTextBox.ForeColor = timerEndColor;
                 if (alarmSoundEnabled && !isAlarmPlaying)
                 {
@@ -61,9 +72,13 @@ namespace Timer
             }
         }
 
-        private String BuildDisplay()
+        /// <summary>
+        /// Build the number display with the proper formatting and numbers.
+        /// </summary>
+        /// <returns>The string representing the time left in a nice format.</returns>
+        private string BuildDisplay()
         {
-            String display = "";
+            string display = "";
             int hours = seconds / 3600;
             int minutes = (seconds - (hours * 3600)) / 60;
             int sec = seconds - (hours * 3600) - (minutes * 60);
@@ -71,10 +86,14 @@ namespace Timer
             return display;
         }
 
+        /// <summary>
+        /// Converts the display back into seconds.
+        /// </summary>
+        /// <returns>The number of seconds being displayed.</returns>
         private int ParseDisplay()
         {
-            String tim = maskedTextBox.Text.Replace(' ', '0');
-            String[] data = tim.Split(':');
+            string tim = maskedTextBox.Text.Replace(' ', '0');
+            string[] data = tim.Split(':');
             Console.WriteLine(data[2]);
             if (data[2].Length == 1)
             {
@@ -95,6 +114,9 @@ namespace Timer
             return sec;
         }
 
+        /// <summary>
+        /// Stops the timer from counting and updates the display color.
+        /// </summary>
         private void Stop()
         {
             timer1.Stop();
@@ -106,6 +128,9 @@ namespace Timer
             maskedTextBox.ForeColor = pauseColor;
         }
 
+        /// <summary>
+        /// Starts the timer and updates the display color.
+        /// </summary>
         private void Start()
         {
             if (!timer1.Enabled)
@@ -116,13 +141,21 @@ namespace Timer
             maskedTextBox.ForeColor = runningColor;
         }
 
+        /// <summary>
+        /// Determines if the key should be handled or not. If so, handle it.
+        /// </summary>
         private void timeDisplay_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = !int.TryParse(e.KeyChar.ToString(), out int isNum);
         }
 
+        /// <summary>
+        /// Whenever a kley is pressed on the form, handle it.
+        /// </summary>
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
+
+            // If its space, stop/start the timer.
            if (e.KeyChar == Convert.ToChar(Keys.Space))
             {
                 if (timer1.Enabled)
@@ -137,6 +170,9 @@ namespace Timer
             }
         }
 
+        /// <summary>
+        /// Focus thetimer area when entered.
+        /// </summary>
         private void maskedTextBox_Enter(object sender, EventArgs e)
         {
             if(timer1.Enabled)
@@ -145,11 +181,17 @@ namespace Timer
             }
         }
 
+        /// <summary>
+        /// Called when the mouse is down in the focus area.
+        /// </summary>
         private void focusArea_MouseDown(object sender, MouseEventArgs e)
         {
             mouseDownBox = true;
         }
 
+        /// <summary>
+        /// Called when the mouse is moving in the focus area.
+        /// </summary>
         private void focusArea_MouseMove(object sender, MouseEventArgs e)
         {
             if (mouseDownBox)
@@ -158,21 +200,34 @@ namespace Timer
             }
         }
 
+        /// <summary>
+        /// Called when the mouse rises in the focus area.
+        /// </summary>
         private void maskedTextBox_MouseUp(object sender, MouseEventArgs e)
         {
             mouseDownBox = false;
         }
 
+
+        /// <summary>
+        /// Called when the mouse is down in the form window.
+        /// </summary>
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
             mouseDownForm = true;
         }
 
+        /// <summary>
+        /// Called when the mouse is up in the form window.
+        /// </summary>
         private void Form1_MouseUp(object sender, MouseEventArgs e)
         {
             mouseDownForm = false;
         }
 
+        /// <summary>
+        /// When the mouse moves in the window, snap the mouse to the corner of the window for easy cornering.
+        /// </summary>
         private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
             if (mouseDownForm)
@@ -183,6 +238,9 @@ namespace Timer
             }
         }
 
+        /// <summary>
+        /// When the mouse double clicks, ask the user if they want to close the app and then maybe close it.
+        /// </summary>
         private void Form1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             DialogResult dr = MessageBox.Show("Are you sure you want to close the timer?", "Timer Close", MessageBoxButtons.YesNo);
